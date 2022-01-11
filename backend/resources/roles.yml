@@ -26,3 +26,7 @@ Resources:
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                 Resource: arn:aws:logs:*:*:*
+              - Effect: Allow
+                Action:
+                  - ssm:*
+                Resource: arn:aws:ssm:*:*:*

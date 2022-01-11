@@ -1,7 +1,7 @@
-'use strict';
+var ssmMgr = require('../util/ssm-mgr');
 
 module.exports.handler = async (event) => {
-	console.log(event.body);
+	let pwd = await ssmMgr.getEmailPassword();
 	return {
 		statusCode: 200,
 		headers: {
@@ -10,7 +10,7 @@ module.exports.handler = async (event) => {
 		},
 		body: JSON.stringify(
 		  {
-			referenceNo: 12323432
+			pwd: pwd
 		  }
 		)
 	  };

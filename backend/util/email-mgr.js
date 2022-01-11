@@ -1,13 +1,15 @@
 var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
+var ssmMgr = require('./ssm-mgr');
 
 module.exports.sendEmail = async (recepients, referenceNo, type) => {
 	console.log(`Sending email to ${recepients}`);
+	let pwd = await ssmMgr.getEmailPassword();
 	var transporter = nodemailer.createTransport(smtpTransport({
 	    service: 'gmail',
 	    auth: {
 	        user: 'bloodcenterproject@gmail.com',
-	        pass: 'b1oodIs@good'
+	        pass: pwd
 	    }
   	}));
 
