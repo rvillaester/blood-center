@@ -1,0 +1,12 @@
+{
+    "name": "blood-center",
+    "private": true,
+    "scripts": {
+      "dev": "xxx"
+    },
+    "dependencies": {
+      "nodemailer": "^6.7.2",
+      "nodemailer-smtp-transport": "^2.7.4"
+    }
+  }
+  

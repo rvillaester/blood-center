@@ -1,0 +1,88 @@
+service: blood-center
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
+  region: ap-southeast-1
+  stage: dev
+
+functions:
+  createDonation:
+    handler: functions/create-donation.handler
+    events:
+      - http:
+          path: create-donation
+          method: post
+          cors: true
+    role: genericRole
+  createRequest:
+    handler: functions/create-request.handler
+    events:
+      - http:
+          path: create-request
+          method: post
+          cors: true
+    role: genericRole
+  search:
+    handler: functions/search.handler
+    events:
+      - http:
+          path: search
+          method: post
+          cors: true
+    role: genericRole
+  searchById:
+    handler: functions/searchById.handler
+    events:
+      - http:
+          path: searchById
+          method: get
+          cors: true
+    role: genericRole
+  login:
+    handler: functions/login.handler
+    events:
+      - http:
+          path: login
+          method: post
+          cors: true
+    role: genericRole
+  takeAction:
+    handler: functions/take-action.handler
+    events:
+      - http:
+          path: takeAction
+          method: post
+          cors: true
+    role: genericRole
+  inventory:
+    handler: functions/inventory.handler
+    events:
+      - http:
+          path: inventory
+          method: get
+          cors: true
+    role: genericRole
+  update-inventory:
+    handler: functions/update-inventory.handler
+    events:
+      - stream:
+          type: dynamodb
+          arn: !GetAtt DDBTable.StreamArn
+          maximumRetryAttempts: 1
+          batchSize: 1
+    role: genericRole
+  test:
+    handler: functions/test.handler
+    events:
+      - http:
+          path: test
+          method: post
+          cors: true
+    role: genericRole
+
+resources:
+  - ${file(resources/resource.yml)}
+  - ${file(resources/roles.yml)}
