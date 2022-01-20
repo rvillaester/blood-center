@@ -1,86 +1,98 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import classes from "./Inventory.module.css";
+import { constructAPIUrl } from "../common";
 
 const inventoryData = {
-    id: '',
-    available: 0,
-    pending: 0,
-    bloodType: ''
-}
+  id: "",
+  available: 0,
+  pending: 0,
+  bloodType: "",
+};
 
 function Inventory() {
-    const [dataA, setDataA] = useState(inventoryData);
-    const [dataB, setDataB] = useState(inventoryData);
-    const [dataAB, setDataAB] = useState(inventoryData);
-    const [dataO, setDataO] = useState(inventoryData);
+//   const [dataANeg, setDataANeg] = useState(inventoryData);
+//   const [dataAPos, setDataAPos] = useState(inventoryData);
+//   const [dataBNeg, setDataBNeg] = useState(inventoryData);
+//   const [dataBPos, setDataBPos] = useState(inventoryData);
+//   const [dataABNeg, setDataABNeg] = useState(inventoryData);
+//   const [dataABPos, setDataABPos] = useState(inventoryData);
+//   const [dataONeg, setDataONeg] = useState(inventoryData);
+//   const [dataOPos, setDataOPos] = useState(inventoryData);
 
-    const router = useRouter();
+  const [inventory, setInventory] = useState([]);
 
-    async function findInventory(){
-        try{
-        let url = `https://njwckx30s1.execute-api.ap-southeast-1.amazonaws.com/dev/inventory`;
-        let response = await fetch(url);
-        return await response.json();
-        }catch(err){
-            console.log('error ' + err);
-        }
+  const router = useRouter();
+
+  async function findInventory() {
+    try {
+      let url = constructAPIUrl('inventory');
+      let response = await fetch(url);
+      return await response.json();
+    } catch (err) {
+      console.log("error " + err);
     }
+  }
 
-    function onBackHandler() {
-        router.push('/admin');
-    }
+  function onBackHandler() {
+    router.push("/admin");
+  }
 
-    useEffect(async () => {
-        let res = await findInventory();
-        let dataA = JSON.parse(res.dataA);
-        setDataA(dataA);
-        let dataB = JSON.parse(res.dataB);
-        setDataB(dataB);
-        let dataAB = JSON.parse(res.dataAB);
-        setDataAB(dataAB);
-        let dataO = JSON.parse(res.dataO);
-        setDataO(dataO);
-      }, []);
+  useEffect(async () => {
+    let res = await findInventory();
+    let dataANeg = JSON.parse(res.dataANeg);
+    // setDataANeg(dataANeg);
+    let dataAPos = JSON.parse(res.dataAPos);
+    // setDataAPos(dataAPos);
+    let dataBNeg = JSON.parse(res.dataBNeg);
+    // setDataBNeg(dataBNeg);
+    let dataBPos = JSON.parse(res.dataBPos);
+    // setDataBPos(dataBPos);
+    let dataABNeg = JSON.parse(res.dataABNeg);
+    // setDataABNeg(dataABNeg);
+    let dataABPos = JSON.parse(res.dataABPos);
+    // setDataABPos(dataABPos);
+    let dataONeg = JSON.parse(res.dataONeg);
+    // setDataONeg(dataONeg);
+    let dataOPos = JSON.parse(res.dataOPos);
+    // setDataOPos(dataOPos);
 
-      return (
-        <div className={classes.container}>
-            <div className={classes.heading}>Blood Inventory</div>
-            <table className={classes.inventory}>
-                <tr>
-                    <th>Blood Type</th>
-                    <th>Available (ml)</th>
-                    <th>Pending (ml)</th>
-                </tr>
+    let data = [
+      dataANeg,
+      dataAPos,
+      dataBNeg,
+      dataBPos,
+      dataABNeg,
+      dataABPos,
+      dataONeg,
+      dataOPos,
+    ];
+    setInventory(data);
+  }, []);
 
-                <tr>
-                    <td>{dataA.bloodType}</td>
-                    <td>{dataA.available}</td>
-                    <td>{dataA.pending}</td>
-                </tr>
-                <tr>
-                    <td>{dataB.bloodType}</td>
-                    <td>{dataB.available}</td>
-                    <td>{dataB.pending}</td>
-                </tr>
-                <tr>
-                    <td>{dataAB.bloodType}</td>
-                    <td>{dataAB.available}</td>
-                    <td>{dataAB.pending}</td>
-                </tr>
-                <tr>
-                    <td>{dataO.bloodType}</td>
-                    <td>{dataO.available}</td>
-                    <td>{dataO.pending}</td>
-                </tr>
-            </table>
+  return (
+    <div className={classes.container}>
+      <div className={classes.heading}>Blood Inventory</div>
+      <table className={classes.inventory}>
+        <tr>
+          <th>Blood Type</th>
+          <th>Available (ml)</th>
+          <th>Pending (ml)</th>
+        </tr>
+        {inventory.map((item) => (
+          <tr key={item.bloodType}>
+            <td>{item.bloodType}</td>
+            <td>{item.available}</td>
+            <td>{item.pending}</td>
+          </tr>
+        ))}
+      </table>
 
-            
-            <div className={classes.actions}>
-                <button onClick={onBackHandler}>Back</button>
-            </div>
-        </div>
-      )
+      <div className={classes.actions}>
+        <button onClick={onBackHandler}>Back</button>
+      </div>
+    </div>
+  );
 }
 
 export default Inventory;

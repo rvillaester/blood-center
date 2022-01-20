@@ -74,6 +74,22 @@ functions:
           maximumRetryAttempts: 1
           batchSize: 1
     role: genericRole
+  data-initialization:
+    handler: functions/data-initialization.handler
+    events:
+      - http:
+          path: data-initialization
+          method: get
+          cors: true
+    role: genericRole
+  histories:
+    handler: functions/history.handler
+    events:
+      - http:
+          path: history
+          method: get
+          cors: true
+    role: genericRole
   test:
     handler: functions/test.handler
     events:

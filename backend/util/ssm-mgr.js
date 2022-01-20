@@ -6,7 +6,7 @@ AWS.config.update({
 const store = new AWS.SSM()
 
 module.exports.getEmailPassword =  async () => {
-  console.log('Retrieving DB password from SSM');
+  console.log('Retrieving Email password from SSM');
   try{
     let data = await store.getParameter({
         Name: 'mail_password'

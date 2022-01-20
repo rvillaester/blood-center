@@ -4,6 +4,7 @@ import classes from "./Form.module.css"
 import styles from '../../../styles/Common.module.css'
 import Link from "next/link";
 import { useRouter } from "next/router";
+import {constructAPIUrl} from "../../common";
 
 function LoginForm(props) {
     const userNameInputRef = useRef();
@@ -11,7 +12,7 @@ function LoginForm(props) {
     const router = useRouter();
     async function submitHandler(event) {
         event.preventDefault();
-        let url = 'https://njwckx30s1.execute-api.ap-southeast-1.amazonaws.com/dev/login';
+        let url = constructAPIUrl('login');
         let response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({

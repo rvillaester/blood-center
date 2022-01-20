@@ -7,10 +7,14 @@ module.exports.handler = async (event) => {
     return responseMgr.response(
             200,
             {
-                dataA: JSON.stringify(record.dataA),
-                dataB : JSON.stringify(record.dataB),
-                dataAB: JSON.stringify(record.dataAB),
-                dataO: JSON.stringify(record.dataO),
+                dataANeg: JSON.stringify(record.dataANeg),
+                dataAPos: JSON.stringify(record.dataAPos),
+                dataBNeg : JSON.stringify(record.dataBNeg),
+                dataBPos : JSON.stringify(record.dataBPos),
+                dataABNeg: JSON.stringify(record.dataABNeg),
+                dataABPos: JSON.stringify(record.dataABPos),
+                dataONeg: JSON.stringify(record.dataONeg),
+                dataOPos: JSON.stringify(record.dataOPos),
             }
         );
 };

@@ -5,9 +5,13 @@ Resources:
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: N
+        - AttributeName: createdDate
+          AttributeType: S
       KeySchema:
         - AttributeName: id
           KeyType: HASH
+        - AttributeName: createdDate
+          KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
