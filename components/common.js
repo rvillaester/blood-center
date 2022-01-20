@@ -1,7 +1,7 @@
 exports.BloodTypes = ["A-", "A+", "B-", "B+", "AB-", "AB+", "O-", "O+"];
 
 exports.constructAPIUrl = (resource) => {
-  let id = 'zdvt8v65ab';
+  let id = '06d9tj2nuh';
   return `https://${id}.execute-api.ap-southeast-1.amazonaws.com/dev/${resource}`;
 };
 

@@ -71,8 +71,6 @@ module.exports.sendEmailNotifForAction = async (recepients, requestType, action,
 	if(requestType == 'donation' && action === 'Completed') {
 		console.log('Donation and Compeleted');
 		await createCard(referenceNo);
-		// let content = fs.readFileSync('/card.txt');
-		// console.log(`file content ${content}`);
 		attachment = {
 			filename: 'card.txt',
 			path: fileLocation
