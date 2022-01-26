@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import Card from "../../ui/Card";
 import classes from "./Form.module.css";
 import styles from "../../../styles/Common.module.css";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { BloodTypes, constructAPIUrl, calculateAge } from "../../common";
 
@@ -14,7 +13,11 @@ function DonateForm(props) {
   const emailInputRef = useRef();
   const quantityInputRef = useRef();
   const router = useRouter();
-  console.log(BloodTypes);
+
+  function onCancelHandler () {
+    router.push('/');
+  }
+
   async function submitHandler(event) {
     event.preventDefault();
     let birthday = bdayInputRef.current.value;
@@ -96,12 +99,10 @@ function DonateForm(props) {
               </div>
               <div className={classes.actionGroup}>
                 <div className={classes.actions}>
-                  <button type="Submit">Submit</button>
+                  <button type="submit">Submit</button>
                 </div>
                 <div className={classes.actions}>
-                  <button>
-                    <Link href="/">Cancel</Link>
-                  </button>
+                  <button type="button" onClick={onCancelHandler}>Cancel</button>
                 </div>
               </div>
             </form>

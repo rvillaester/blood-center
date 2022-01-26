@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import Card from "../../ui/Card";
 import classes from "./Form.module.css"
 import styles from '../../../styles/Common.module.css'
-import Link from "next/link";
 import { useRouter } from "next/router";
 import {constructAPIUrl} from "../../common";
 
@@ -10,6 +9,11 @@ function LoginForm(props) {
     const userNameInputRef = useRef();
     const passwordInputRef = useRef();
     const router = useRouter();
+
+    function onCancelHandler () {
+      router.push('/');
+    }
+
     async function submitHandler(event) {
         event.preventDefault();
         let url = constructAPIUrl('login');
@@ -55,13 +59,11 @@ function LoginForm(props) {
                     </div>
                     <div className={classes.actionGroup}>
                     <div className={classes.actions}>
-                        <button type="Submit">Login</button>
+                        <button type="submit">Login</button>
                     </div>
                     <div className={classes.actions}>
-                        <button>
-                            <Link href='/'>
+                        <button onClick={onCancelHandler}>
                             Cancel
-                            </Link>
                         </button>
                     </div>
                     </div>

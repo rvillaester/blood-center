@@ -55,7 +55,7 @@ function AppointmentForm(props) {
 
               <div className={classes.actionGroup}>
                 <div className={classes.actions}>
-                  <button type="Submit">Submit</button>
+                  <button type="submit">Submit</button>
                 </div>
                 <div className={classes.actions}>
                   <button onClick={onBackHandler}>Back</button>
