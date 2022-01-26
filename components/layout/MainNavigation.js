@@ -19,7 +19,7 @@ function MainNavigation() {
 
   return (
     <header className={classes.header}>
-      <div className={classes.logo}>Blood Center of the Philippines</div>
+      <div className={classes.logo}>Blood Center of Kidapawan City</div>
       <nav>
         <ul>
           <li>
