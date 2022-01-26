@@ -17,7 +17,7 @@ function HomePage(props) {
       <div className={styles.container}>
         <main className={styles.main}>
           <h1 className={styles.title}>
-            Welcome To Blood Center Of The Phillipines
+            Some quote
           </h1>
 
           <div className={styles.grid}>
