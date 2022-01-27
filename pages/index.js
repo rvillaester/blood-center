@@ -17,7 +17,7 @@ function HomePage(props) {
       <div className={styles.container}>
         <main className={styles.main}>
           <h1 className={styles.title}>
-            Welcome To Blood Center Of The Phillipines
+            Every Blood Donor, Is a Life Saver
           </h1>
 
           <div className={styles.grid}>
@@ -30,7 +30,7 @@ function HomePage(props) {
 
             <Link href='/request'>
               <div className={styles.card}>
-                <h2>I am a Patient</h2>
+                <h2>I am a Seeker</h2>
                 <p>I am requesting blood for medical reason. Thank you!</p>
               </div>
             </Link>
