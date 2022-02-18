@@ -76,7 +76,7 @@ function DonateForm(props) {
                 <label htmlFor="btype">Blood Type</label>
                 <select id="btype" name="btype" ref={bloodTypeInputRef}>
                   {BloodTypes.map((bloodType) => (
-                    <option value={bloodType}>{bloodType}</option>
+                    <option value={bloodType} key={bloodType}>{bloodType}</option>
                   ))}
                 </select>
               </div>
