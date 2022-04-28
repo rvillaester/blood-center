@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import classes from "./BloodList.module.css";
-import { constructAPIUrl } from "../common";
+import { constructAPIUrl, isAdmin, getUserId } from "../common";
 
 function BloodList(props) {
   const typeInputRef = useRef();
@@ -13,7 +13,7 @@ function BloodList(props) {
   function onViewHandler(id) {
     console.log("id=" + id);
     router.push({
-      pathname: "/admin/view",
+      pathname: "/dashboard/view",
       query: {
         referenceNo: id,
       },
@@ -28,17 +28,20 @@ function BloodList(props) {
   }
 
   async function onInventoryHandler() {
-    router.push("/admin/inventory");
+    router.push("/dashboard/inventory");
   }
 
   async function search() {
     let url = constructAPIUrl("search");
+    let bloodType = (bloodTypeInputRef && bloodTypeInputRef.current) ? bloodTypeInputRef.current.value : 'All';
+    console.log(bloodType);
     let response = await fetch(url, {
       method: "POST",
       body: JSON.stringify({
         type: typeInputRef.current.value,
-        bloodType: bloodTypeInputRef.current.value,
+        bloodType: bloodType,
         status: statusInputRef.current.value,
+        userId: getUserId()
       }),
     });
     return await response.json();
@@ -62,27 +65,29 @@ function BloodList(props) {
             <option value="request">Request</option>
           </select>
         </div>
-        <div className={classes.control}>
-          <label htmlFor="type">Blood Type</label>
-          <select
-            id="type"
-            name="type"
-            ref={bloodTypeInputRef}
-            defaultValue="All"
-          >
-            <option value="All">All</option>
-            <option value="A+">A+</option>
-            <option value="A-">A-</option>
-            <option value="B+">B+</option>
-            <option value="B-">B-</option>
-            <option value="AB+">AB+</option>
-            <option value="AB-">AB-</option>
-            <option value="O+">O+</option>
-            <option value="O-">O-</option>
-           
-          
-          </select>
-        </div>
+        { isAdmin() && 
+          <div className={classes.control}>
+            <label htmlFor="type">Blood Type</label>
+            <select
+              id="type"
+              name="type"
+              ref={bloodTypeInputRef}
+              defaultValue="All"
+            >
+              <option value="All">All</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            
+            
+            </select>
+          </div>
+        }
         <div className={classes.control}>
           <label htmlFor="status">Status</label>
           <select
@@ -102,9 +107,11 @@ function BloodList(props) {
             <button type="button" onClick={onSearchHandler}>
               Search
             </button>
-            <button type="button" onClick={onInventoryHandler}>
-              Inventory
-            </button>
+            { isAdmin() && 
+              <button type="button" onClick={onInventoryHandler}>
+                Inventory
+              </button>
+            }
           </div>
         </div>
       </div>

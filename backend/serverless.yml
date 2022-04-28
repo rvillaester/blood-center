@@ -1,5 +1,4 @@
 service: blood-center
-frameworkVersion: '2'
 
 provider:
   name: aws
@@ -9,6 +8,14 @@ provider:
   stage: dev
 
 functions:
+  register:
+    handler: functions/register.handler
+    events:
+      - http:
+          path: register
+          method: post
+          cors: true
+    role: genericRole
   createDonation:
     handler: functions/create-donation.handler
     events:
@@ -23,6 +30,14 @@ functions:
       - http:
           path: create-request
           method: post
+          cors: true
+    role: genericRole
+  searchAccount:
+    handler: functions/searchAccount.handler
+    events:
+      - http:
+          path: searchAccount
+          method: get
           cors: true
     role: genericRole
   search:

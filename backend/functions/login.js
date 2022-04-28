@@ -11,16 +11,20 @@ module.exports.handler = async (event) => {
 
     let statusCode = 403
     let name = '';
-    if(record != null){
+    let isAdmin = 'N';
+    
+    if(record != null && record.password === password) {
         statusCode = 200;
         name = record.name;
-    } 
+        isAdmin = record.isAdmin ? 'Y' : 'N';
+    }
 
     return responseMgr.response(
         statusCode,
             {
                 name: name,
-                status: statusCode
+                status: statusCode,
+                isAdmin: isAdmin
             }
         );
 };

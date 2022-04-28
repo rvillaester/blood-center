@@ -4,7 +4,7 @@ var ddbMgr = require("../util/ddb-mgr");
 
 module.exports.handler = async (event) => {
   await inventoryMgr.insertInventories();
-  await ddbMgr.insertUser('admin', 'admin', 'Admin');
+  await ddbMgr.insertAdminUser('admin', 'admin', 'Admin');
   return responseMgr.response(200, {
     message: 'All Good',
   });

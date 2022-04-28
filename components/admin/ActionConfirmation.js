@@ -9,7 +9,7 @@ function ActionConfirmation(props) {
       <div className={classes.confirmation}>
           <h1>The request has been {action}.</h1>
           <button>
-              <Link href='/admin'>Back To Dashboard</Link></button>
+              <Link href='/dashboard'>Back To Dashboard</Link></button>
       </div>
     );
 }

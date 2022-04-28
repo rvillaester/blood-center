@@ -7,17 +7,18 @@ var donateMgr = require("../util/validation-mgr");
 module.exports.handler = async (event) => {
   console.log(event.body);
   let data = JSON.parse(event.body);
-  let { name, birthday, bloodType, mobile, email, quantity } = data;
+  const { quantity, userId } = data;
   console.log(
-    `${name} - ${birthday} - ${bloodType} - ${mobile} - ${email} - ${quantity}`
+    `${quantity} - ${userId}`
   );
+  
+  let user = await ddbMgr.findByPKUser(userId);
+  const {name, bloodType, birthday } = user;
 
   let requestType = "donation";
   let validity = await donateMgr.checkValidity(
     requestType,
-    email,
-    bloodType,
-    name,
+    userId,
     birthday
   );
   console.log(JSON.stringify(validity));
@@ -37,16 +38,14 @@ module.exports.handler = async (event) => {
       createdDate: common.getFormattedDateTimeToday(),
       requestType: requestType,
       name: name,
-      birthday: birthday,
       bloodType: bloodType,
-      mobile: mobile,
-      email: email,
+      userId: userId,
       quantity: parseInt(quantity),
-      requestStatus: requestStatus,
+      requestStatus: requestStatus
     },
   };
   await ddbMgr.put(params);
-  await emailMgr.sendEmail(email, id, "donation");
+  await emailMgr.sendEmail(userId, id, "donation");
 
   return responseMgr.response(200, {
     valid: true,

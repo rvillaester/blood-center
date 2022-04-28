@@ -35,7 +35,7 @@ function Inventory() {
   }
 
   function onBackHandler() {
-    router.push("/admin");
+    router.push("/dashboard");
   }
 
   useEffect(async () => {

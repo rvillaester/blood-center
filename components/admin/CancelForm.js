@@ -28,7 +28,7 @@ function CancelForm(props) {
 
   function onBackHandler() {
     router.push({
-      pathname: "/admin/view",
+      pathname: "/dashboard/view",
       query: {
         referenceNo: refNo,
       },

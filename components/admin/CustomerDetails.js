@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import classes from "./CustomerDetails.module.css";
-import { getFormattedDateToday, constructAPIUrl } from "../common";
+import { getFormattedDateToday, constructAPIUrl, isAdmin } from "../common";
 
 function CustomerDetails() {
   const router = useRouter();
@@ -28,12 +28,12 @@ function CustomerDetails() {
   });
 
   function onBackHandler() {
-    router.push("/admin");
+    router.push("/dashboard");
   }
 
   function onHistoryHandler() {
     router.push({
-      pathname: "/admin/history",
+      pathname: "/dashboard/history",
       query: {
         referenceNo: refNo,
         email: customer.email,
@@ -43,7 +43,7 @@ function CustomerDetails() {
 
   function onScheduleAppointmentHandler() {
     router.push({
-      pathname: "/admin/appointment",
+      pathname: "/dashboard/appointment",
       query: {
         referenceNo: refNo,
       },
@@ -75,7 +75,7 @@ function CustomerDetails() {
       alert(message);
     } else {
       router.push({
-        pathname: "/admin/confirmation",
+        pathname: "/dashboard/confirmation",
         query: {
           action: "Completed",
         },
@@ -85,7 +85,7 @@ function CustomerDetails() {
 
   async function onCancelHandler() {
     router.push({
-      pathname: "/admin/cancel",
+      pathname: "/dashboard/cancel",
       query: {
         referenceNo: refNo,
       },
@@ -198,15 +198,15 @@ function CustomerDetails() {
           customer.requestStatus == "Scheduled") && (
           <button onClick={onCancelHandler}>Cancel</button>
         )}
-        {customer.requestStatus == "Scheduled" && (
+        {isAdmin() && customer.requestStatus == "Scheduled" && (
           <button onClick={onCompleteHandler}>Complete</button>
         )}
-        {customer.requestStatus == "Pending" && (
+        {isAdmin() && customer.requestStatus == "Pending" && (
           <button onClick={onScheduleAppointmentHandler}>
             Schedule Appointment
           </button>
         )}
-        {hasHistory && <button onClick={onHistoryHandler}>History</button>}
+        {isAdmin() && hasHistory && <button onClick={onHistoryHandler}>History</button>}
       </div>
     </div>
   );

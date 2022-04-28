@@ -5,7 +5,6 @@ var historyMgr = require('../util/history-mgr');
 module.exports.handler = async (event) => {
   let id = event.queryStringParameters.id;
 	console.log(id);
-
   let params = {
     TableName: 'blood-center',
     KeyConditionExpression: 'id = :id',
@@ -15,8 +14,12 @@ module.exports.handler = async (event) => {
   };
 
   let res = await ddbMgr.query(params);
-  let data = res.Items[0];
-  let hasHistory = await historyMgr.checkHistory(data.email);
+  let item = res.Items[0];
+  let user = await ddbMgr.findByPKUser(item.userId);
+  let data = { ...user, ...item };
+  let hasHistory = false;
+  if(user.isAdmin)
+    hasHistory = await historyMgr.checkHistory(data.userId);
   return responseMgr.response(
         200,
         {

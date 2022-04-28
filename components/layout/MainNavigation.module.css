@@ -19,6 +19,11 @@
     color: white;
     font-weight: bold;
   }
+
+  .greeting:hover{
+    cursor: pointer;
+    color: #6dff99;
+  }
   
   .header ul {
     list-style: none;
@@ -34,12 +39,14 @@
 
   .header li a{
     cursor: pointer;
+    font-size: 18px;
   }
   
   .header a {
     text-decoration: none;
     font-size: 1.5rem;
-    color: #fcb8d2;
+    /* color: #fcb8d2; */
+    color: #6dff99;
   }
   
   .header a:hover,

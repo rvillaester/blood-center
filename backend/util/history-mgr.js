@@ -1,12 +1,12 @@
 var ddbMgr = require("./ddb-mgr");
 var common = require("./common");
 
-module.exports.checkHistory = async (email) => {
+module.exports.checkHistory = async (userId) => {
   params = {
     TableName: "blood-center",
-    FilterExpression: "email = :email",
+    FilterExpression: "userId = :userId",
     ExpressionAttributeValues: {
-      ":email": email,
+      ":userId": userId,
     },
   };
   let res = await ddbMgr.scan(params);

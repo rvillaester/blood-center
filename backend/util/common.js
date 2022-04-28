@@ -3,6 +3,12 @@ function appendZero(num) {
   return num;
 }
 
+exports.calculateAge = (birthday) => {
+  var ageDifMs = Date.now() - birthday;
+  var ageDate = new Date(ageDifMs); 
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
+
 module.exports.getMonthDiff = (dateFrom, dateTo) => {
   return dateTo.getMonth() - dateFrom.getMonth() + 
     (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));

@@ -8,7 +8,7 @@ module.exports.handler = async (event, context, callback) => {
   let bloodType = record.dynamodb.NewImage.bloodType.S;
   if (requestType == "request") {
     let donor = record.dynamodb.NewImage.donor.S;
-    if (action == "Completed" && donor !== "")
+    if (requestStatus == "Completed" && donor !== "")
       return;
   }
 

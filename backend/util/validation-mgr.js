@@ -3,16 +3,14 @@ var common = require("./common");
 
 module.exports.checkValidity = async (
   requestType,
-  email,
-  bloodType,
-  name,
+  userId,
   birthday
 ) => {
   params = {
     TableName: "blood-center",
-    FilterExpression: "email = :email",
+    FilterExpression: "userId = :userId",
     ExpressionAttributeValues: {
-      ":email": email,
+      ":userId": userId,
     },
   };
   let res = await ddbMgr.scan(params);
@@ -27,9 +25,6 @@ module.exports.checkValidity = async (
 
   let valid = true;
   let message = "";
-  let previousBloodType = "";
-  let previousName = "";
-  let previousBirthday = "";
 
   items.forEach((item) => {
     let status = item.requestStatus;
@@ -42,41 +37,30 @@ module.exports.checkValidity = async (
 
     if (status === "Completed") {
       let today = new Date();
-      previousBloodType = item.bloodType;
       previousName = item.name;
       previousBirthday = item.birthday;
       let previousRequestType = item.requestType;
       let lastTransactionDate = new Date(item.completedDate);
       let monthDiff = common.getMonthDiff(lastTransactionDate, today);
       if (requestType == 'donation' && previousRequestType == 'donation') {
+
         if (monthDiff <= 3) {
-          console.log("You have donated blood for the past 3 months");
           valid = false;
           message =
-            "You have donated blood for the past 3 months. You need to wait after 3 months to donate again.";
+            'You have donated blood for the past 3 months. You need to wait after 3 months to donate again.';
+        }
+
+        let age = common.calculateAge(new Date(birthday));
+        if(age < 18){
+          valid = false;
+          message = 'You should be 18 years old and above in order to donate blood.';
         }
       }
     }
   });
 
-  if (previousName !== "" && previousName !== name && valid) {
-    valid = false;
-    message = `The name you entered (${name}) doesn't match the name from our previous record which is ${previousName}.`;
-  }
-
-  if (previousBirthday !== "" && previousBirthday !== birthday && valid) {
-    valid = false;
-    message = `The birthdate you entered (${birthday}) doesn't match the birthday from our previous record which is ${previousBirthday}.`;
-  }
-
-  if (previousBloodType !== "" && previousBloodType !== bloodType && valid) {
-    valid = false;
-    message = `The blood type selected (${bloodType}) doesn't match your previous blood type ${previousBloodType}.`;
-  }
-
   return {
     valid: valid,
-    bloodType: bloodType,
     message: message,
   };
 };

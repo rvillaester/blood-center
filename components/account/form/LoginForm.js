@@ -17,10 +17,11 @@ function LoginForm(props) {
     async function submitHandler(event) {
         event.preventDefault();
         let url = constructAPIUrl('login');
+        let username = userNameInputRef.current.value;
         let response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({
-                username: userNameInputRef.current.value,
+                username: username,
                 password: passwordInputRef.current.value,
             })
         })
@@ -30,13 +31,18 @@ function LoginForm(props) {
             alert('Invalid username or password');
         } else {
             let data = await response.json();
-            let d = JSON.stringify(data);
-            console.log(`name ${d}`);
+            let name = data.name.split(' ')[0];
             if (typeof window !== "undefined") {
                 localStorage.setItem('status', 'authenticated');
-                localStorage.setItem('name', data.name);
+                localStorage.setItem('name', name);
+                localStorage.setItem('isAdmin', data.isAdmin);
+                localStorage.setItem('userId', username);
             }
-            router.push('/admin');
+
+            if(data.isAdmin)
+                router.push('/dashboard');
+            else
+                router.push('/');
         }
     }
     
@@ -45,7 +51,7 @@ function LoginForm(props) {
             <div className={styles.container}>
                 <main className={styles.main}>
                 <h1 className={styles.title}>
-                    Admin Log In
+                    Login Form
                 </h1>
             <Card>
                 <form className={classes.form} onSubmit={submitHandler}>

@@ -12,7 +12,7 @@ module.exports.handler = async (event) => {
 
   let record = await ddbMgr.findByPK(id);
   console.log('XXXX ' + JSON.stringify(record));
-  const { requestType, bloodType, quantity, email, createdDate, donor } = record;
+  const { requestType, bloodType, quantity, userId: email, createdDate, donor } = record;
   if (requestType == "request" && action == "Completed" && donor === '') {
     let available = await inventoryMgr.getAvailableForBloodType(bloodType);
     console.log(`available: ${available}`)

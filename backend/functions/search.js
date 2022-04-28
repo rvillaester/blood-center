@@ -1,52 +1,57 @@
 var ddbMgr = require('../util/ddb-mgr');
 var responseMgr = require('../util/response-mgr');
 
+function addCriteria(criteria, field, value) {
+  if(criteria.filterExp.length > 0) {
+    criteria.filterExp += ' AND ';
+  }
+  criteria.filterExp += `${field} = :${field}`;
+  criteria.expAttVals[`:${field}`] = value;
+}
+
 module.exports.handler = async (event) => {
 	console.log(event.body);
   let data = JSON.parse(event.body);
-  let {type, bloodType, status} = data;
-  console.log(`${type} - ${bloodType} - ${status}`)
+  let {type, bloodType, status, userId} = data;
+  console.log(`${type} - ${bloodType} - ${status} - ${userId}`)
+
+  let user = await ddbMgr.findByPKUser(userId);
 
   let params = {
     TableName: 'blood-center'
   };
 
-  let filterExp = '';
-  let expAttVals = {};
-  let validType = false;
+  let criteria = {
+    filterExp: '',
+    expAttVals: {}
+  }
+
+  // let filterExp = '';
+  // let expAttVals = {};
+
+  if(!user.isAdmin) {
+    addCriteria(criteria, 'userId', userId);
+  }
 
   if((type != 'All')) {
-    validType = true;
-    filterExp = 'requestType = :requestType';
-    expAttVals[':requestType'] = type;
+    addCriteria(criteria, 'requestType', type);
   }
 
   if(bloodType != 'All') {
-    validBloodType = true;
-    if(validType) {
-      filterExp += ' AND bloodType = :bloodType';
-    } else {
-      filterExp += 'bloodType = :bloodType';
-    }
-    expAttVals[':bloodType'] = bloodType;
+    addCriteria(criteria, 'bloodType', bloodType);
   }
 
   if(status != 'All') {
-    if(validType){
-      filterExp += ' AND requestStatus = :status';
-    } else {
-      filterExp += 'requestStatus = :status';
-    }
-    expAttVals[':status'] = status;
+    addCriteria(criteria, 'requestStatus', status);
   }
 
-  if(filterExp !== '') {
-    console.log('Filter Expression: ' + filterExp);
-    console.log('Filter Expression attr values: ' + JSON.stringify(expAttVals));
+  if(criteria.filterExp !== '') {
+    console.log('Filter Expression: ' + criteria.filterExp);
+    console.log('Filter Expression attr values: ' + JSON.stringify(criteria.expAttVals));
     params = {
       TableName: 'blood-center',
-      FilterExpression : filterExp,
-      ExpressionAttributeValues : expAttVals
+      FilterExpression : criteria.filterExp,
+      ExpressionAttributeValues : criteria.expAttVals
     };
   }
 

@@ -25,7 +25,6 @@ module.exports.scan = async (params) => {
 
 module.exports.query = async (params) => {
   console.log("Searching DB");
-  console.log(`params ${params}`);
   console.log(JSON.stringify(params));
   try {
     return await docClient.query(params).promise();
@@ -80,13 +79,14 @@ module.exports.findByPKUser = async (username) => {
   return null;
 };
 
-module.exports.insertUser = async (username, password, name) => {
+module.exports.insertAdminUser = async (username, password, name) => {
   var params = {
     TableName: 'blood-center-user',
     Item: {
-      'username' : username,
+      'username': username,
       'password': password,
-      'name' : name
+      'name': name,
+      'isAdmin': true
     }
   };
   console.log("Saving to DB");
@@ -97,5 +97,3 @@ module.exports.insertUser = async (username, password, name) => {
     console.log("error: " + err);
   }
 };
-
-
